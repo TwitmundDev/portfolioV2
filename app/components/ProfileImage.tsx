@@ -6,12 +6,14 @@ import { useState } from 'react';
 interface ProfileImageProps {
   src: string;
   alt: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
+  fill?: boolean;
+  sizes?: string;
   className?: string;
 }
 
-export default function ProfileImage({ src, alt, width, height, className }: ProfileImageProps) {
+export default function ProfileImage({ src, alt, width, height, fill, sizes, className }: ProfileImageProps) {
   const [imageSrc, setImageSrc] = useState(src);
 
   const handleError = () => {
@@ -22,8 +24,10 @@ export default function ProfileImage({ src, alt, width, height, className }: Pro
     <Image
       src={imageSrc}
       alt={alt}
-      width={width}
-      height={height}
+      width={fill ? undefined : width}
+      height={fill ? undefined : height}
+      fill={fill}
+      sizes={sizes}
       className={className}
       onError={handleError}
     />

@@ -2,15 +2,15 @@ import ProfileImage from "./ProfileImage";
 
 export default function HeroSection() {
   return (
-    <section className="bg-gradient-to-br from-blue-600 to-purple-700 text-white py-20">
+    <section className="bg-gradient-to-br from-blue-600 to-purple-700 text-white py-20" id="home">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="mb-8">
+        <div className="mb-8 relative w-[150px] h-[150px] mx-auto">
           <ProfileImage
-            src="/placeholder-avatar.jpg"
+            src="/pfp.jpg"
             alt="Photo de profil"
-            width={150}
-            height={150}
-            className="rounded-full mx-auto border-4 border-white shadow-lg"
+            fill={true}
+            sizes="(max-width: 768px) 120px, 150px"
+            className="rounded-full border-4 border-white shadow-lg object-cover"
           />
         </div>
         <h1 className="text-4xl md:text-6xl font-bold mb-4">

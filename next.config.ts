@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Export statique : Cloudflare Pages sert le dossier `out/`
+  output: "export",
+  images: { unoptimized: true },
 };
 
 export default nextConfig;

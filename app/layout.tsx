@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Albert_Sans } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const albert = Albert_Sans({
+  variable: "--font-albert",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
-  title: "Mon Portfolio - Romdhame Ellwane",
-  description: "Portfolio personnel présentant mes projets et compétences en développement web",
+  title: "Ellwane Romdhame - Développeur Java / Vue.js",
+  description: "Développeur Java et Vue.js : des plugins Minecraft aux API, outils métier et applications web. Projets, parcours et contact.",
 };
 
 export default function RootLayout({
@@ -23,11 +20,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="fr" className={albert.variable} suppressHydrationWarning>
+      <head>
+        {/* Sans JavaScript, le contenu reste visible : les animations ne s'activent qu'avec la classe js */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}",
+          }}
+        />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

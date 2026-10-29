@@ -1,219 +1,136 @@
+'use client';
+
+/* eslint-disable @next/next/no-img-element */
+import { useEffect, useRef, useState } from "react";
+import { featured, others } from "../data";
+
 export default function ProjectsSection() {
+  const [current, setCurrent] = useState(0);
+  const pinRef = useRef<HTMLDivElement>(null);
+
+  // Chaque projet occupe une tranche du défilement ; la tranche courante choisit l'image
+  useEffect(() => {
+    const pin = pinRef.current;
+    if (!pin) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const r = pin.getBoundingClientRect();
+      const travel = pin.offsetHeight - window.innerHeight;
+      const p = Math.min(0.999, Math.max(0, -r.top / travel));
+      setCurrent(Math.floor(p * featured.length));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const p = featured[current];
+
   return (
-    <section id="projects" className="py-20 bg-white dark:bg-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Mes projets
-          </h2>
-          <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Portfolio */}
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="h-48 bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center">
-              <span className="text-white text-4xl">💼</span>
+    <section id="projets" className="work" aria-labelledby="projets-title">
+      <div className="work-pin" ref={pinRef}>
+        <div className="work-stage">
+          <div className="work-left">
+            <h2 id="projets-title" className="work-title">
+              Ce que
+              <br />
+              j&apos;ai construit
+            </h2>
+            <div className="work-current" aria-live="polite">
+              <p>{p.summary}</p>
+              <p className="muted">{p.facts}</p>
+              <a href={p.link} target="_blank" rel="noopener noreferrer" className="link">
+                {p.linkLabel} <span aria-hidden="true">↗</span>
+              </a>
             </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Portfolio
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Portfolio personnel développé avec Vue.js et Vite.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-sm">
-                  Vue.js
-                </span>
-                <span className="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-sm">
-                  JavaScript
-                </span>
-                <span className="bg-pink-100 dark:bg-pink-900 text-pink-800 dark:text-pink-200 px-2 py-1 rounded text-sm">
-                  CSS
-                </span>
-                <span className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded text-sm">
-                  Vite
-                </span>
-                <span className="bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 px-2 py-1 rounded text-sm">
-                  CI/CD
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <a href="/" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  Voir le projet
-                </a>
-              </div>
-            </div>
+            <ol className="work-index">
+              {featured.map((proj, i) => (
+                <li key={proj.name} className={i === current ? "is-current" : ""}>
+                  <a href={proj.link} target="_blank" rel="noopener noreferrer">
+                    <span className="name">{proj.name}</span>
+                    <span className="disc">{proj.disciplines}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
           </div>
-
-          {/* Site vitrine Rescue Electro Informatique */}
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="h-48 bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
-              <span className="text-white text-4xl">🌐</span>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Site vitrine Rescue Electro Informatique
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Refonte du site vitrine de l&apos;entreprise avec Wordpress, installation et configuration de plugins, optimisation SEO, création de contenu et gestion du site. Stage de 8 semaines en Mars - Juin 2025.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-sm">
-                  Wordpress
-                </span>
-                <span className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded text-sm">
-                  PHP
-                </span>
-                <span className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 px-2 py-1 rounded text-sm">
-                  OVH
-                </span>
-                <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-sm">
-                  SEO
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <a href="https://rescuenow.fr/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  Voir le projet
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* MC Anti VPN */}
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="h-48 bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center">
-              <span className="text-white text-4xl">🛡️</span>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                MC Anti VPN
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Plugin Minecraft développé en Java pour protéger les serveurs contre les connexions via VPN. Le plugin est customisable au besoin de l&apos;utilisateur et utilise une API externe pour vérifier les adresses IP. Disponible sur SpigotMC, Modrinth et GitHub.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded text-sm">
-                  Java
-                </span>
-                <span className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded text-sm">
-                  Minecraft
-                </span>
-                <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-sm">
-                  API Spigot
-                </span>
-                <span className="bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 px-2 py-1 rounded text-sm">
-                  API externe
-                </span>
-                <span className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 px-2 py-1 rounded text-sm">
-                  Gestion d&apos;événements
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <a href="https://modrinth.com/plugin/mc-anti-vpn" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  Voir le projet
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* H20h */}
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="h-48 bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center">
-              <span className="text-white text-4xl">💧</span>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                H20h
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Plugin Minecraft développé en Java pour intégrer un système d&apos;hydratation dans le jeu. Le plugin ajoute une nouvelle mécanique de jeu où les joueurs doivent boire de l&apos;eau régulièrement pour rester hydratés. Disponible sur Modrinth et GitHub.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded text-sm">
-                  Java
-                </span>
-                <span className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded text-sm">
-                  Minecraft
-                </span>
-                <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-sm">
-                  API Spigot
-                </span>
-                <span className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 px-2 py-1 rounded text-sm">
-                  Gestion d&apos;événements
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <a href="https://modrinth.com/plugin/h2oh" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  Voir le projet
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Participation traduction Modrinth */}
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="h-48 bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
-              <span className="text-white text-4xl">🌍</span>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Traduction Modrinth
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Participation à la traduction du site et de l&apos;application Modrinth en français via Crowdin, plateforme de traduction collaborative.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-sm">
-                  Traduction
-                </span>
-                <span className="bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 px-2 py-1 rounded text-sm">
-                  Crowdin
-                </span>
-                <span className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded text-sm">
-                  Modrinth
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <a href="https://crowdin.com/project/modrinth-platform" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  Voir le projet
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* ERP HazielDev */}
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="h-48 bg-gradient-to-br from-teal-400 to-green-500 flex items-center justify-center">
-              <span className="text-white text-4xl">📊</span>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                ERP HazielDev
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Stage de 8 semaines en Mars - Juin 2023. Développement d&apos;une API REST pour un ERP (Entreprise Ressource Planning) en Java avec Spark et d&apos;une application front-end en utilisant un framework JavaScript maison. Installation et configuration d&apos;une infrastructure réseau (Proxmox, Pfsense, Docker, Drone, Gitea).
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded text-sm">
-                  Java
-                </span>
-                <span className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 px-2 py-1 rounded text-sm">
-                  SysAdmin
-                </span>
-                <span className="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-sm">
-                  JavaScript
-                </span>
-                <span className="bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 px-2 py-1 rounded text-sm">
-                  Spark
-                </span>
-                <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-sm">
-                  Docker
-                </span>
-              </div>
-            </div>
+          <div className="work-picture">
+            {featured.map((proj, i) => (
+              <figure
+                key={proj.name}
+                className={i === current ? "shot is-current" : i < current ? "shot is-past" : "shot"}
+                aria-hidden={i !== current}
+              >
+                <div className="shot-bar">
+                  <span className="dots" aria-hidden="true"><i /><i /><i /></span>
+                  <span className="shot-url">{proj.shot.url}</span>
+                </div>
+                <img
+                  src={proj.shot.src}
+                  alt={proj.shot.alt}
+                  width={2400}
+                  height={1600}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  className={proj.shot.native ? "native" : undefined}
+                  style={{
+                    objectPosition: proj.shot.position,
+                    ["--nat" as string]: proj.shot.native ? `${proj.shot.native}px` : undefined,
+                    ["--off" as string]: `${-(proj.shot.offset ?? 0)}px`,
+                  }}
+                />
+              </figure>
+            ))}
           </div>
         </div>
+      </div>
+
+      <div className="work-phone">
+        {featured.map((proj) => (
+          <article key={proj.name} className="phone-project" data-reveal>
+            <figure className="shot">
+              <div className="shot-bar">
+                <span className="dots" aria-hidden="true"><i /><i /><i /></span>
+                <span className="shot-url">{proj.shot.url}</span>
+              </div>
+              <img src={proj.shot.src} alt={proj.shot.alt} width={2400} height={1600} loading="lazy" decoding="async" style={{ objectPosition: proj.shot.position }} />
+            </figure>
+            <h3>{proj.name}</h3>
+            <p className="muted">{proj.disciplines}</p>
+            <p>{proj.summary}</p>
+            <p className="muted">{proj.facts}</p>
+            <a href={proj.link} target="_blank" rel="noopener noreferrer" className="link">
+              {proj.linkLabel} <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <div className="others">
+        <h3 className="others-title" data-reveal>Et aussi</h3>
+        <ul>
+          {others.map((o, i) => (
+            <li key={o.name} data-reveal style={{ ["--d" as string]: i % 4 }}>
+              <span className="o-year">{o.year}</span>
+              <span className="o-name">
+                {o.link ? (
+                  <a href={o.link} target="_blank" rel="noopener noreferrer" className="link">{o.name}</a>
+                ) : (
+                  o.name
+                )}
+              </span>
+              <span className="o-what">{o.what}</span>
+              <span className="o-stack">{o.stack}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

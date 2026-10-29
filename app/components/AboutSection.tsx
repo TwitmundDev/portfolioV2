@@ -1,61 +1,28 @@
 /* eslint-disable @next/next/no-img-element */
-const portraits = [
-  {
-    src: "/pfp.jpg",
-    alt: "Portrait d'Ellwane Romdhame",
-    who: "Ellwane Romdhame",
-    role: "Développeur Java / Vue.js, Lyon",
-    text: "Disponible immédiatement en CDI, CDD, alternance ou freelance, sur place à Lyon ou à distance.",
-  },
-  {
-    src: "/images/portrait-of-joseph-marie-jacquard-1752-1834.jpg",
-    alt: "Portrait de Joseph Marie Jacquard à son atelier, tissé en soie à Lyon en 1839",
-    who: "Joseph Marie Jacquard",
-    role: "Portrait tissé en soie, Lyon, 1839",
-    text: "Ce portrait n'est pas une gravure : un métier Jacquard l'a tissé, piloté par des milliers de cartes perforées.",
-  },
-  {
-    src: "/images/a-jacquard-loom-showing-information-punchcards-national.jpg",
-    alt: "Métier Jacquard en bois avec sa chaîne de cartes perforées suspendue",
-    who: "Le métier Jacquard",
-    role: "Inventé à Lyon en 1804",
-    text: "Une chaîne de cartes perforées dit à la machine quels fils lever. C'est l'un des premiers programmes de l'histoire.",
-  },
-];
-
 export default function AboutSection() {
   return (
-    <section id="about" className="about" aria-labelledby="about-title">
-      <div className="about-text">
-        <h2 id="about-title" className="display" data-reveal>
-          À propos
+    <section id="histoire" className="letter" aria-labelledby="histoire-title">
+      <div className="letter-col">
+        <img className="avatar" src="/pfp.jpg" alt="Portrait d'Ellwane Romdhame" width={88} height={88} data-reveal />
+        <h2 id="histoire-title" className="letter-title" data-reveal>
+          Tout a commencé sur Minecraft
         </h2>
-        <p data-reveal style={{ ["--d" as string]: 1 }}>
-          Je code depuis le collège, et j&apos;ai surtout appris en construisant : un ERP en Java, une application interne de gestion de parc, une application de budget, des outils et des jeux.
+        <p data-reveal>
+          J&apos;ai écrit mes premières lignes de code au collège, pour un jeu : Minecraft. Je voulais changer les règles des serveurs sur lesquels je jouais, alors j&apos;ai appris Java en codant des plugins et des mods.
         </p>
-        <p data-reveal style={{ ["--d" as string]: 2 }}>
-          Le support et la gestion de parc m&apos;ont appris à écouter les utilisateurs. C&apos;est pour eux que j&apos;écris des outils simples, qui servent vraiment.
+        <p data-reveal>
+          Certains de ces plugins sont encore en ligne. <mark>H2Oh et McAntiVPN cumulent plus de 600 téléchargements</mark> par des administrateurs de serveurs que je ne connais pas.
         </p>
-        <p data-reveal style={{ ["--d" as string]: 3 }}>
-          À Lyon, on programme des machines depuis 1804. Je continue la tradition, en Java et en Vue.js.
+        <p data-reveal>
+          Ensuite sont venus les bots Discord en Python, un backend Spring Boot pour mon chef-d&apos;œuvre au lycée, le site de vente de fleurs du CVL en Vue.js, puis des stages où j&apos;ai développé un ERP et une application de gestion de parc.
         </p>
-      </div>
-
-      <div className="about-portraits">
-        {portraits.map((p) => (
-          <figure key={p.src} className="portrait" data-reveal>
-            <div className="frame">
-              <img src={p.src} alt={p.alt} width={1200} height={1500} loading="lazy" decoding="async" data-drift />
-            </div>
-            <figcaption>
-              <span className="who">{p.who}</span>
-              <br />
-              <span className="role">{p.role}</span>
-              <br />
-              {p.text}
-            </figcaption>
-          </figure>
-        ))}
+        <p data-reveal>
+          Aujourd&apos;hui je cherche une équipe où construire des API, des outils métier et des applications web, en CDI, en alternance ou en mission.
+        </p>
+        <p className="sign" data-reveal>
+          <span className="sign-name">Ellwane Romdhame</span>
+          <span className="sign-role">Développeur Java et Vue.js</span>
+        </p>
       </div>
     </section>
   );

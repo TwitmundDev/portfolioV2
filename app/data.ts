@@ -1,159 +1,119 @@
-export type Picture = { src: string; alt: string };
+// native : largeur d'affichage en px (capture prise en 2x) pour garder le texte lisible ; offset : décalage vertical
+export type Shot = { src: string; alt: string; url: string; position?: string; native?: number; offset?: number };
 
 export type Project = {
   name: string;
-  title: string;
-  kind: string;
-  year: string;
-  description: string;
-  stack: string;
-  link?: string;
-  picture?: Picture;
+  disciplines: string;
+  summary: string;
+  facts: string;
+  link: string;
+  linkLabel: string;
+  shot: Shot;
 };
 
-export const projects: Project[] = [
+// Projets mis en avant, avec une capture réelle de chacun
+export const featured: Project[] = [
   {
-    name: "Parc",
-    title: "Gestion de parc informatique",
-    kind: "Application métier",
-    year: "2026",
-    description:
-      "Application web interne développée chez Général Frigorifique France pour suivre les PC : inventaire, affectation, renouvellement.",
-    stack: "Développement web · outil interne",
-    picture: {
-      src: "/images/ibm-card-storage-nara.jpg",
-      alt: "Entrepôt de boîtes de cartes perforées IBM en 1959, archives nationales américaines",
-    },
-  },
-  {
-    name: "ERP",
-    title: "ERP HazielDev",
-    kind: "Stage · back-end et infra",
-    year: "2023",
-    description:
-      "API REST d'un ERP en Java avec Spark, front-end maison, et toute la chaîne : Gitea, intégration continue Drone, Docker sur Proxmox.",
-    stack: "Java · Spark · MariaDB · Docker · Drone CI",
-    picture: {
-      src: "/images/ibm-card-punch-51333058324.jpg",
-      alt: "Perforatrice de cartes IBM 129 exposée dans un musée",
-    },
-  },
-  {
-    name: "Finances",
-    title: "Mes Finances",
-    kind: "Application de bureau",
-    year: "2026",
-    description:
-      "Gestion de budget : import de relevés bancaires, catégorisation des dépenses, base locale et outil en ligne de commande.",
-    stack: "Electron · Node.js · SQLite",
-  },
-  {
-    name: "Cercles",
-    title: "Générateur de cercles magiques",
-    kind: "Outil web",
-    year: "2026",
-    description:
-      "Textures par couches avec aperçu animé en temps réel. Exporte des PNG, des archives ZIP et un script Luau prêt pour Roblox.",
-    stack: "JavaScript · Canvas · SVG · Luau",
-    picture: {
-      src: "/images/projets/cercles-magiques.jpg",
-      alt: "Capture du générateur de cercles magiques : un cercle doré de runes au centre, les couches à gauche, les réglages à droite",
-    },
-  },
-  {
-    name: "Brawler",
-    title: "Jeu de combat Roblox",
-    kind: "Jeu multijoueur",
-    year: "2026",
-    description:
-      "Jeu de combat inspiré de Smash et Brawlhalla, avec héros, armes et arènes. Conception documentée dans un wiki Obsidian.",
-    stack: "Luau strict · Rojo · Git",
-    picture: {
-      src: "/images/men-fencing-engraving-by-j-gelle.jpg",
-      alt: "Gravure ancienne de J. Gelle montrant des escrimeurs en garde dans une architecture à colonnes",
-    },
-  },
-  {
-    name: "Anti VPN",
-    title: "MC Anti VPN",
-    kind: "Plugin Minecraft",
-    year: "2024",
-    description:
-      "Bloque les connexions via VPN en vérifiant les adresses IP auprès d'une API externe. Publié sur SpigotMC, Modrinth et GitHub.",
-    stack: "Java · API Spigot · API REST",
+    name: "McAntiVPN",
+    disciplines: "Java · Spigot · API REST",
+    summary:
+      "Mon plugin Minecraft qui bloque les joueurs connectés via un VPN. Il interroge l'API IPHub et garde chaque IP en cache pour rester sous la limite gratuite de 1 000 requêtes par jour.",
+    facts: "Code sur GitHub depuis 2023 · 139 téléchargements sur Modrinth",
     link: "https://modrinth.com/plugin/mc-anti-vpn",
+    linkLabel: "Voir sur Modrinth",
+    shot: { src: "/shots/anti-vpn-code.jpg", alt: "Le fichier PlayerConnectEvent.java de McAntiVPN ouvert sur GitHub", url: "github.com/TwitmundDev/McAntiVPN", position: "0% 34%", native: 1246, offset: 230 },
   },
   {
-    name: "H2Oh",
-    title: "H2Oh",
-    kind: "Plugin Minecraft",
-    year: "2024",
-    description:
-      "Ajoute une mécanique d'hydratation : les joueurs doivent boire régulièrement pour rester en forme. Publié sur Modrinth et GitHub.",
-    stack: "Java · API Spigot",
+    name: "H2Oh!",
+    disciplines: "Java · Paper · Gameplay",
+    summary:
+      "Un plugin qui ajoute la soif au jeu : jauge configurable, effets quand elle baisse, eau à boire pour la remonter, messages traduisibles.",
+    facts: "Publié sur Modrinth en 2025 · 502 téléchargements",
     link: "https://modrinth.com/plugin/h2oh",
+    linkLabel: "Voir sur Modrinth",
+    shot: { src: "/shots/h2oh.jpg", alt: "Page Modrinth du plugin H2Oh avec 502 téléchargements", url: "modrinth.com/plugin/h2oh", position: "0% 0%", native: 930, offset: 0 },
   },
   {
-    name: "Rescue",
-    title: "Site Rescue Electro Informatique",
-    kind: "Site vitrine · stage BTS SIO",
-    year: "2025",
-    description:
-      "Refonte du site de la boutique sous WordPress à partir des besoins du gérant : plugins, SEO, contenu et mise en ligne.",
-    stack: "WordPress · PHP · SEO",
-    link: "https://rescuenow.fr/",
-    picture: {
-      src: "/images/projets/rescue.jpg",
-      alt: "Page d'accueil du site Rescue Electro Informatique",
-    },
+    name: "Cercles magiques",
+    disciplines: "JavaScript · Canvas · Luau",
+    summary:
+      "Un générateur de textures par couches avec aperçu animé en temps réel. Il exporte des PNG, des archives ZIP et un script Luau prêt à l'emploi dans Roblox.",
+    facts: "Outil web sans build, ouvrable en double-clic",
+    link: "https://github.com/TwitmundDev",
+    linkLabel: "Mon GitHub",
+    shot: { src: "/shots/cercles-magiques.jpg", alt: "Le générateur de cercles magiques : un cercle doré au centre, les couches à gauche, les réglages à droite", url: "MagicCircle Generator · index.html", position: "50% 50%" },
   },
   {
-    name: "Modrinth",
-    title: "Traduction Modrinth",
-    kind: "Open source",
-    year: "2024",
-    description: "Contribution à la traduction française du site et de l'application Modrinth via Crowdin.",
-    stack: "Crowdin · traduction",
-    link: "https://crowdin.com/project/modrinth-platform",
+    name: "CVL Flower",
+    disciplines: "Vue.js · Spring Boot · MongoDB",
+    summary:
+      "Le site de vente de fleurs du conseil de la vie lycéenne de mon lycée : front en Vue.js avec Vite et Chart.js, API Spring Boot avec authentification JWT.",
+    facts: "Vue 50 % · Java 36 % du code",
+    link: "https://github.com/TwitmundDev/CVL-FLOWER",
+    linkLabel: "Voir le code",
+    shot: { src: "/shots/cvl-flower.jpg", alt: "Le dépôt GitHub CVL-FLOWER avec ses dossiers cvlApi et cvlfront et ses langages", url: "github.com/TwitmundDev/CVL-FLOWER", position: "0% 0%", native: 1228, offset: 0 },
   },
 ];
 
-export type CareerRow = { what: string; where: string; detail: string; when: string };
+export type OtherProject = { name: string; what: string; stack: string; year: string; link?: string };
 
-export const experience: CareerRow[] = [
-  { what: "Auditeur IT", where: "Codeo", detail: "Diagnostic de 30 PC par jour, effacement RGPD", when: "Août – oct. 2026" },
-  { what: "Équipier polyvalent", where: "Burger King", detail: "Restauration rapide", when: "Juin – août 2026" },
-  { what: "Gestionnaire de parc", where: "Général Frigorifique France", detail: "Support N1/N2, application interne", when: "Févr. – mars 2026" },
-  { what: "Développeur web et technicien", where: "Rescue Electro Informatique", detail: "Stage BTS SIO, site WordPress", when: "Mai – juil. 2025" },
-  { what: "Technicien helpdesk", where: "Helpline", detail: "Intérim, client Crédit Agricole", when: "Juin – août 2024" },
-  { what: "Développeur et sysadmin", where: "HazielDev", detail: "Stage, ERP Java et infrastructure", when: "Mars – juin 2023" },
+export const others: OtherProject[] = [
+  { name: "Gestion de parc", what: "Application web interne de suivi des PC, Général Frigorifique France", stack: "Développement web", year: "2026" },
+  { name: "Mes Finances", what: "Application de bureau de budget : relevés bancaires, catégories, outil en ligne de commande", stack: "Electron · SQLite", year: "2026" },
+  { name: "Jeu de combat Roblox", what: "Jeu multijoueur type Smash, avec héros, armes et arènes", stack: "Luau · Rojo", year: "2026" },
+  { name: "Rescue Electro Informatique", what: "Refonte du site de la boutique pendant mon stage de BTS", stack: "WordPress", year: "2025", link: "https://rescuenow.fr/" },
+  { name: "DTI Codes", what: "Référence des codes du jeu Roblox DTI", stack: "Vue.js", year: "2025", link: "https://github.com/TwitmundDev/dti-codes" },
+  { name: "Keaver", what: "Backend de mon chef-d'œuvre de Première et Terminale", stack: "Spring Boot · MongoDB · JWT", year: "2024", link: "https://github.com/TwitmundDev/KeaverAll" },
+  { name: "ERP HazielDev", what: "API REST d'un ERP et infrastructure Docker, Gitea, Drone", stack: "Java · Spark", year: "2023" },
+  { name: "Redirection vhost Apache", what: "Script qui génère la configuration de redirection d'un site", stack: "Shell", year: "2023", link: "https://github.com/TwitmundDev/redirectVhostApacheScript" },
+  { name: "Bot Discord MMR", what: "Bot qui affiche le classement League of Legends des joueurs", stack: "Python", year: "2022", link: "https://github.com/TwitmundDev/bot-discord-mmr-lol" },
+  { name: "Discord Webhook UI", what: "Interface pour envoyer des webhooks Discord", stack: "Python", year: "2021", link: "https://github.com/TwitmundDev/DisocrdWebhookUI" },
 ];
 
-export const education: CareerRow[] = [
-  { what: "BTS SIO, option SLAM", where: "1re année validée", detail: "Développement d'applications", when: "2024 – 2025" },
-  { what: "Bac pro SN, option RISC", where: "Lycée Auguste Chevrollier, Angers", detail: "Réseaux et systèmes", when: "2021 – 2024" },
-  { what: "Cisco IT Essentials", where: "Cisco Networking Academy", detail: "Certification", when: "Obtenue" },
-  { what: "SecNum", where: "ANSSI", detail: "Sécurité numérique", when: "Obtenue" },
-  { what: "SST", where: "Sauveteur secouriste du travail", detail: "Certification", when: "Obtenue" },
-  { what: "Introduction to Cloud Computing", where: "IBM Developer Skills Network", detail: "Formation en ligne", when: "En cours" },
+export type CareerRow = { when: string; what: string; note: string; kind: string };
+
+export const career: { tab: string; rows: CareerRow[] }[] = [
+  {
+    tab: "Expérience",
+    rows: [
+      { when: "Août – oct. 2026", what: "Auditeur IT · Codeo", note: "Diagnostic de 30 PC par jour, effacement des données conforme au RGPD", kind: "" },
+      { when: "Juin – août 2026", what: "Équipier polyvalent · Burger King", note: "Restauration rapide", kind: "" },
+      { when: "Févr. – mars 2026", what: "Gestionnaire de parc · GFF", note: "Support N1/N2 et application web interne de gestion du parc", kind: "" },
+      { when: "Mai – juil. 2025", what: "Développeur web · Rescue Electro", note: "Refonte du site WordPress, réparation de PC et smartphones", kind: "Stage" },
+      { when: "Juin – août 2024", what: "Technicien helpdesk · Helpline", note: "Support à distance pour le Crédit Agricole, tickets METIS", kind: "Intérim" },
+      { when: "Mars – juin 2023", what: "Développeur et sysadmin · HazielDev", note: "ERP en Java avec Spark, infrastructure Proxmox, Docker, Drone CI", kind: "Stage" },
+    ],
+  },
+  {
+    tab: "Formation",
+    rows: [
+      { when: "2024 – 2025", what: "BTS SIO, option SLAM", note: "Développement d'applications, 1re année validée", kind: "BTS" },
+      { when: "2021 – 2024", what: "Bac pro Systèmes numériques, RISC", note: "Lycée Auguste Chevrollier, Angers", kind: "Bac" },
+    ],
+  },
+  {
+    tab: "Certifications",
+    rows: [
+      { when: "Obtenue", what: "Cisco IT Essentials", note: "Matériel, systèmes et réseaux", kind: "Cisco" },
+      { when: "Obtenue", what: "SecNum", note: "Sécurité numérique, ANSSI", kind: "ANSSI" },
+      { when: "Obtenue", what: "SST", note: "Sauveteur secouriste du travail", kind: "INRS" },
+      { when: "En cours", what: "Introduction to Cloud Computing", note: "IBM Developer Skills Network", kind: "IBM" },
+    ],
+  },
 ];
 
 export const skills: { group: string; items: string }[] = [
-  { group: "Back-end", items: "Java, Spark, Spring Boot, Node.js, Express, PHP, Go, Python, API REST, MariaDB et SQL" },
-  { group: "Front-end", items: "Vue.js, JavaScript, TypeScript, React et Next.js, HTML et CSS, Tailwind, WordPress" },
-  { group: "Desktop et outils", items: "Electron, SQLite, scraping, Git" },
-  { group: "DevOps et infra", items: "Docker, Gitea, Drone CI, Proxmox, pfSense, Linux Debian" },
-  { group: "Terrain", items: "Active Directory, Office 365, support N1/N2, gestion de parc" },
+  { group: "Back-end", items: "Java, Spring Boot, Spark, API Spigot et Paper, Node.js, PHP, Go, Python, MongoDB, MariaDB" },
+  { group: "Front-end", items: "Vue.js, Vite, JavaScript, TypeScript, React et Next.js, Tailwind" },
+  { group: "Outils", items: "Git, Docker, Gitea, Drone CI, Gradle, Electron, SQLite" },
+  { group: "Systèmes", items: "Linux Debian, Proxmox, pfSense, Active Directory, Office 365" },
 ];
 
-export const credits = [
-  { title: "Métier à tisser Jacquard 01 (vidéo)", creator: "Bastenbas", license: "CC BY-SA 4.0", page: "https://commons.wikimedia.org/wiki/File:M%C3%A9tier_%C3%A0_tisser_Jacquard_01.webm" },
-  { title: "A Jacquard loom showing information punchcards, National Museum of Scotland", creator: "Stephencdickson", license: "CC BY-SA 4.0", page: "https://commons.wikimedia.org/wiki/File:A_Jacquard_loom_showing_information_punchcards,_National_Museum_of_Scotland.jpg" },
-  { title: "Portrait of Joseph Marie Jacquard, 1839", creator: "d'après Claude Bonnefond, Art Institute of Chicago", license: "Domaine public (CC0)", page: "https://www.artic.edu/artworks/25974" },
-  { title: "Longue traboule Lyon 9", creator: "Chabe01", license: "CC BY-SA 4.0", page: "https://commons.wikimedia.org/wiki/File:Longue_traboule_Lyon_9.jpg" },
-  { title: "Traboule de Lyon 026", creator: "Tusco", license: "CC BY-SA 3.0", page: "https://commons.wikimedia.org/wiki/File:Traboule_de_Lyon_026.JPG" },
-  { title: "Un bus TCL Grande Rue de la Croix-Rousse", creator: "Benoît Prieur", license: "CC0", page: "https://commons.wikimedia.org/wiki/File:Un_bus_TCL_Grande_Rue_de_la_Croix-Rousse_(Lyon)_en_janvier_2022.jpg" },
-  { title: "IBM card storage, 1959", creator: "NARA", license: "Domaine public", page: "https://commons.wikimedia.org/wiki/File:IBM_card_storage.NARA.jpg" },
-  { title: "IBM Card punch", creator: "Steve Elliott from UK", license: "CC BY-SA 2.0", page: "https://commons.wikimedia.org/wiki/File:IBM_Card_punch_(51333058324).jpg" },
-  { title: "Men fencing, engraving by J. Gelle", creator: "Wellcome Collection", license: "CC BY 4.0", page: "https://commons.wikimedia.org/wiki/File:Men_fencing._Engraving_by_J._Gelle._Wellcome_V0041151.jpg" },
+export const links = [
+  { label: "GitHub", href: "https://github.com/TwitmundDev" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/ellwane-romdhame-aa1a88238/" },
+  { label: "Modrinth", href: "https://modrinth.com/plugin/h2oh" },
+  { label: "LeetCode", href: "https://leetcode.com/u/twitmunddev/" },
 ];
+
+export const EMAIL = "contact@twitmund.fr";

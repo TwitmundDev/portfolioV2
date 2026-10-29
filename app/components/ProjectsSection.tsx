@@ -2,92 +2,132 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useRef, useState } from "react";
-import { projects } from "../data";
-import PunchCard from "./PunchCard";
+import { featured, others } from "../data";
 
 export default function ProjectsSection() {
   const [current, setCurrent] = useState(0);
-  const listRef = useRef<HTMLUListElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
 
+  // Chaque projet occupe une tranche du défilement ; la tranche courante choisit l'image
   useEffect(() => {
-    const items = listRef.current?.querySelectorAll<HTMLElement>("[data-index]");
-    if (!items) return;
-    // Le projet courant est celui qui croise le milieu de l'écran
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) setCurrent(Number((e.target as HTMLElement).dataset.index));
-        }
-      },
-      { rootMargin: "-49% 0px -49% 0px" }
-    );
-    items.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    const pin = pinRef.current;
+    if (!pin) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const r = pin.getBoundingClientRect();
+      const travel = pin.offsetHeight - window.innerHeight;
+      const p = Math.min(0.999, Math.max(0, -r.top / travel));
+      setCurrent(Math.floor(p * featured.length));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
-  const p = projects[current];
+  const p = featured[current];
 
   return (
-    <section id="projects" className="work" aria-labelledby="projects-title">
-      <div className="work-stage" aria-hidden="true">
-        <div className="work-fact">
-          <p className="kind">{p.title}</p>
-          <p className="muted">{p.kind}, {p.year}</p>
-          <p>{p.description}</p>
-        </div>
-        <div className="work-frame">
-          {projects.map((proj, i) =>
-            proj.picture ? (
-              <img
+    <section id="projets" className="work" aria-labelledby="projets-title">
+      <div className="work-pin" ref={pinRef}>
+        <div className="work-stage">
+          <div className="work-left">
+            <h2 id="projets-title" className="work-title">
+              Ce que
+              <br />
+              j&apos;ai construit
+            </h2>
+            <div className="work-current" aria-live="polite">
+              <p>{p.summary}</p>
+              <p className="muted">{p.facts}</p>
+              <a href={p.link} target="_blank" rel="noopener noreferrer" className="link">
+                {p.linkLabel} <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <ol className="work-index">
+              {featured.map((proj, i) => (
+                <li key={proj.name} className={i === current ? "is-current" : ""}>
+                  <a href={proj.link} target="_blank" rel="noopener noreferrer">
+                    <span className="name">{proj.name}</span>
+                    <span className="disc">{proj.disciplines}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="work-picture">
+            {featured.map((proj, i) => (
+              <figure
                 key={proj.name}
-                src={proj.picture.src}
-                alt=""
-                width={1200}
-                height={1200}
-                loading="lazy"
-                decoding="async"
-                className={i === current ? "is-current" : ""}
-              />
-            ) : (
-              <div key={proj.name} className={i === current ? "is-current" : ""} style={{ display: "grid", placeItems: "center", padding: "12%" }}>
-                <PunchCard text={proj.name} minColumns={8} label="" />
-              </div>
-            )
-          )}
-        </div>
-        <div className="work-fact right">
-          <p className="muted">{p.stack}</p>
-          {p.link && <p>{new URL(p.link).hostname.replace("www.", "")} ↗</p>}
+                className={i === current ? "shot is-current" : i < current ? "shot is-past" : "shot"}
+                aria-hidden={i !== current}
+              >
+                <div className="shot-bar">
+                  <span className="dots" aria-hidden="true"><i /><i /><i /></span>
+                  <span className="shot-url">{proj.shot.url}</span>
+                </div>
+                <img
+                  src={proj.shot.src}
+                  alt={proj.shot.alt}
+                  width={2400}
+                  height={1600}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  className={proj.shot.native ? "native" : undefined}
+                  style={{
+                    objectPosition: proj.shot.position,
+                    ["--nat" as string]: proj.shot.native ? `${proj.shot.native}px` : undefined,
+                    ["--off" as string]: `${-(proj.shot.offset ?? 0)}px`,
+                  }}
+                />
+              </figure>
+            ))}
+          </div>
         </div>
       </div>
 
-      <ul className="work-list display" ref={listRef}>
-        <li className="heading-line">
-          <h2 id="projects-title" style={{ font: "inherit" }}>Projets</h2>
-        </li>
-        {projects.map((proj, i) => (
-          <li key={proj.name} data-index={i} className={i === current ? "is-current" : ""}>
-            {proj.link ? (
-              <a href={proj.link} target="_blank" rel="noopener noreferrer" aria-label={`${proj.title}, ${proj.description}`}>
-                {proj.name}
-              </a>
-            ) : (
-              <span className="name" aria-label={`${proj.title}, ${proj.description}`}>{proj.name}</span>
-            )}
-            <p className="phone-desc" aria-hidden="true">
-              <strong>{proj.title}</strong> · {proj.kind}, {proj.year}. {proj.description}
-            </p>
-          </li>
+      <div className="work-phone">
+        {featured.map((proj) => (
+          <article key={proj.name} className="phone-project" data-reveal>
+            <figure className="shot">
+              <div className="shot-bar">
+                <span className="dots" aria-hidden="true"><i /><i /><i /></span>
+                <span className="shot-url">{proj.shot.url}</span>
+              </div>
+              <img src={proj.shot.src} alt={proj.shot.alt} width={2400} height={1600} loading="lazy" decoding="async" style={{ objectPosition: proj.shot.position }} />
+            </figure>
+            <h3>{proj.name}</h3>
+            <p className="muted">{proj.disciplines}</p>
+            <p>{proj.summary}</p>
+            <p className="muted">{proj.facts}</p>
+            <a href={proj.link} target="_blank" rel="noopener noreferrer" className="link">
+              {proj.linkLabel} <span aria-hidden="true">↗</span>
+            </a>
+          </article>
         ))}
-      </ul>
-      <div className="work-end" aria-hidden="true" />
+      </div>
 
-      <div className="sr-only">
-        <h3>Détail des projets</h3>
+      <div className="others">
+        <h3 className="others-title" data-reveal>Et aussi</h3>
         <ul>
-          {projects.map((proj) => (
-            <li key={proj.name}>
-              {proj.title} ({proj.kind}, {proj.year}) : {proj.description} Technologies : {proj.stack}.
+          {others.map((o, i) => (
+            <li key={o.name} data-reveal style={{ ["--d" as string]: i % 4 }}>
+              <span className="o-year">{o.year}</span>
+              <span className="o-name">
+                {o.link ? (
+                  <a href={o.link} target="_blank" rel="noopener noreferrer" className="link">{o.name}</a>
+                ) : (
+                  o.name
+                )}
+              </span>
+              <span className="o-what">{o.what}</span>
+              <span className="o-stack">{o.stack}</span>
             </li>
           ))}
         </ul>

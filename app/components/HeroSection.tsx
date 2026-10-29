@@ -1,43 +1,40 @@
-import ProfileImage from "./ProfileImage";
-
 export default function HeroSection() {
   return (
-    <section className="bg-gradient-to-br from-blue-600 to-purple-700 text-white py-20" id="home">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="mb-8 relative w-[150px] h-[150px] mx-auto">
-          <ProfileImage
-            src="/pfp.jpg"
-            alt="Photo de profil"
-            fill={true}
-            sizes="(max-width: 768px) 120px, 150px"
-            className="rounded-full border-4 border-white shadow-lg object-cover"
-          />
-        </div>
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          👋 Ellwane Romdhame - Backend & Systèmes
-        </h1>
-        <p className="text-xl md:text-2xl mb-8 text-blue-100">
-          Développeur Backend | Logiciels
-        </p>
-        <p className="text-lg max-w-2xl mx-auto text-blue-50">
-          Polyvalent et autonome, je combine compétences en administration système et développement backend (Java, Go, Python).<br /> 
-          Disponible immédiatement.
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="#projects"
-            className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors"
-          >
-            Voir mes projets
-          </a>
-          <a
-            href="#contact"
-            className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-          >
-            Me contacter
-          </a>
+    <header className="hero" id="home">
+      <div className="hero-bar">
+        <a href="#home" className="monogram" aria-label="Ellwane Romdhame, retour en haut">
+          ER
+        </a>
+        <nav aria-label="Navigation principale">
+          <a href="#projects" className="link">Projets</a>
+          <a href="#parcours" className="link hide-phone">Parcours</a>
+          <a href="#about" className="link hide-phone">À propos</a>
+          <a href="#contact" className="link">Contact</a>
+        </nav>
+      </div>
+
+      <h1 className="hero-title display">
+        <span className="line">
+          <span data-line style={{ ["--i" as string]: 0 }}>Ellwane</span>
+        </span>
+        <span className="line second">
+          <span data-line style={{ ["--i" as string]: 1 }}>Romdhame</span>
+        </span>
+      </h1>
+
+      <div className="hero-foot">
+        <div>
+          <p data-fade>
+            Développeur Java / Vue.js à Lyon. Je construis des applications web et des outils métier simples et utilisés.
+          </p>
+          <div className="actions" data-fade>
+            <a href="#projects" className="link">Voir les projets</a>
+            <a href="#contact" className="btn">
+              Me contacter <span className="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </div>
-    </section>
+    </header>
   );
 }

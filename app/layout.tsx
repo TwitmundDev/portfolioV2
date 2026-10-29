@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Albert_Sans, Imbue } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const imbue = Imbue({
+  variable: "--font-imbue",
   subsets: ["latin"],
+  weight: "400",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const albert = Albert_Sans({
+  variable: "--font-albert",
   subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
-  title: "Mon Portfolio - Romdhame Ellwane",
-  description: "Portfolio personnel présentant mes projets et compétences en développement web",
+  title: "Ellwane Romdhame - Développeur Java / Vue.js à Lyon",
+  description: "Développeur Java / Vue.js à Lyon : applications web, outils métier et sites pour PME. Projets, parcours et contact.",
 };
 
 export default function RootLayout({
@@ -23,11 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="fr" className={`${imbue.variable} ${albert.variable}`}>
+      <head>
+        {/* Sans JavaScript, le contenu reste visible : les animations ne s'activent qu'avec la classe js */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }
